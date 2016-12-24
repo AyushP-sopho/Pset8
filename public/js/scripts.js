@@ -79,7 +79,7 @@ function addMarker(place)
         map: map,
         title: place['place_name']
         });
-    var content
+    
     markers.push(marker);
 }
 
