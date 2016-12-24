@@ -48,7 +48,7 @@ $(function() {
     // options for map
     // https://developers.google.com/maps/documentation/javascript/reference#MapOptions
     var options = {
-        center: {lat: 37.4236, lng: -122.1619}, // Stanford, California
+        center: {lat: 42.3770, lng: -71.1256}, // Cambridge, Massachusetts
         disableDefaultUI: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         maxZoom: 14,
@@ -74,7 +74,13 @@ $(function() {
  */
 function addMarker(place)
 {
-    // TODO
+    var marker = new google.maps.Marker({
+        position: {lat: parseFloat(place["latitude"]), lng:  parseFloat(place["longitude"])},
+        map: map,
+        title: place['place_name']
+        });
+    var content
+    markers.push(marker);
 }
 
 /**
@@ -108,7 +114,7 @@ function configure()
         source: search,
         templates: {
             empty: "no places found yet",
-            suggestion: _.template("<p>TODO</p>")
+            suggestion: _.template("<p><%-place_name%>, <%-admin_name1 %> <%-postal_code %></p>") 
         }
     });
 
@@ -159,7 +165,11 @@ function hideInfo()
  */
 function removeMarkers()
 {
-    // TODO
+    for (var i = 0; i < markers.length; i++) 
+    {
+          markers[i].setMap(null);
+    }
+    markers.length=0;
 }
 
 /**
