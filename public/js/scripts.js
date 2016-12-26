@@ -77,9 +77,31 @@ function addMarker(place)
     var marker = new google.maps.Marker({
         position: {lat: parseFloat(place["latitude"]), lng:  parseFloat(place["longitude"])},
         map: map,
-        title: place['place_name']
+        title: place['place_name'],
+        postal_code: place["postal_code"]
         });
-    
+    marker.addListener('click', function() {
+        var _this = this;
+        
+        var parameters = {
+        geo: this.postal_code
+        };
+
+        $.getJSON("articles.php", parameters, function(data) {
+            if(data.length !=0)
+            {
+                var content="<ul>";
+                for (var i=0; i<data.length; i++)
+                {
+                    content += "<li><a href = " +data[i]["link"]+ " > " + data[i]["title"] + "</a></li>";
+                }
+                content+="</ul>";
+            }
+            showInfo(_this, content);
+        });
+        
+    });
+   
     markers.push(marker);
 }
 
@@ -102,7 +124,7 @@ function configure()
     google.maps.event.addListener(map, "dragstart", function() {
         removeMarkers();
     });
-
+    
     // configure typeahead
     // https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md
     $("#q").typeahead({
@@ -255,3 +277,4 @@ function update()
          console.log(errorThrown.toString());
      });
 }
+  
