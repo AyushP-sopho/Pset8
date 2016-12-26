@@ -74,12 +74,16 @@ $(function() {
  */
 function addMarker(place)
 {
-    var marker = new google.maps.Marker({
+    var marker = new MarkerWithLabel({
         position: {lat: parseFloat(place["latitude"]), lng:  parseFloat(place["longitude"])},
         map: map,
         title: place['place_name'],
-        postal_code: place["postal_code"]
+        postal_code: place["postal_code"],
+        labelContent: place["place_name"]+', '+place["admin_name1"],
+        labelClass: "label", // the CSS class for the label
+        labelStyle: {opacity: 1}
         });
+    
     marker.addListener('click', function() {
         var _this = this;
         
