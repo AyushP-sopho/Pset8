@@ -84,28 +84,8 @@ function addMarker(place)
         labelStyle: {opacity: 1}
         });
     
-    marker.addListener('click', function() {
-        var _this = this;
-        
-        var parameters = {
-        geo: this.postal_code
-        };
-
-        $.getJSON("articles.php", parameters, function(data) {
-            if(data.length !=0)
-            {
-                var content="<ul>";
-                for (var i=0; i<data.length; i++)
-                {
-                    content += "<li><a href = " +data[i]["link"]+ " > " + data[i]["title"] + "</a></li>";
-                }
-                content+="</ul>";
-            }
-            showInfo(_this, content);
-        });
-        
-    });
-   
+    addListeners(marker);
+    
     markers.push(marker);
 }
 
@@ -282,3 +262,38 @@ function update()
      });
 }
   
+function addListeners(marker)
+{
+    //Set the marker to bounce once
+    marker.addListener('click', function(){
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        window.setTimeout(marker.setAnimation(null), 1000);
+    } );
+   
+    //Show infoWindow on click
+    marker.addListener('click', function() {
+        var _this = this;
+        
+        var parameters = {
+        geo: this.postal_code
+        };
+    
+        //Get JSON from articles.php
+        $.getJSON("articles.php", parameters, function(data) {
+            if(data.length !=0)
+            {   
+                //Compose data in html form to show
+                var content="<ul>";
+                for (var i=0; i<data.length; i++)
+                {
+                    content += "<li><a href = " +data[i]["link"]+ " > " + data[i]["title"] + "</a></li>";
+                }
+                content+="</ul>";
+            }
+            //show infoWindow
+            showInfo(_this, content);
+        });
+        
+    });
+    
+}
