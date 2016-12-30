@@ -79,7 +79,8 @@ function addMarker(place)
         map: map,
         title: place['place_name'],
         postal_code: place["postal_code"],
-        labelContent: place["place_name"]+', '+place["admin_name1"],
+        admin_name1: place["admin_name1"],
+        labelContent: place["place_name"],
         labelClass: "label", // the CSS class for the label
         labelStyle: {opacity: 1}
         });
@@ -283,12 +284,13 @@ function addListeners(marker)
             if(data.length !=0)
             {   
                 //Compose data in html form to show
-                var content="<ul>";
+                var header = "<div class = 'iw-title'>"+_this.title+", "+_this.admin_name1+"</div>";
+                var content=header+"<div id = 'iw-body'><ul>";
                 for (var i=0; i<data.length; i++)
                 {
                     content += "<li><a href = " +data[i]["link"]+ " > " + data[i]["title"] + "</a></li>";
                 }
-                content+="</ul>";
+                content+="</ul></div>";
             }
             //show infoWindow
             showInfo(_this, content);
